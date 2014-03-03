@@ -1,0 +1,112 @@
+%\VignetteIndexEntry{RNASeq Sample Size Estimation Software with "rsse" package}
+%\VignettePackage{dupchecker}
+%\VignetteEngine{knitr::knitr}
+
+\documentclass[12pt]{article}
+
+\usepackage{hyperref}
+\usepackage{subfigure}
+\usepackage{graphicx}
+\usepackage{float}
+
+\hypersetup{
+    colorlinks=true, %set true if you want colored links
+    linktoc=all,     %set to all if you want both sections and subsections linked
+    linkcolor=blue,  %choose some color if you want links to stand out
+}
+
+\author{Quanhu Sheng$^{*}$, Shilin Zhao, Chung-I Li, Yu Shyr \\[1em] \small{Center for Quantitative Sciences, Vanderbilt University, Nashville, USA} \\ 
+\small{\texttt{$^*$quanhu.sheng (at) vanderbilt.edu}}}
+
+\title{rsse -- A RNASeq Sample Size Estimation Tool}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+In this vignette, we demonstrate the application of rsse as a RNASeq sample size estimation tool. It provide an user-friendly interface for RNASeq sample size estimation.
+\end{abstract}
+
+\tableofcontents
+
+\section{Introduction}
+
+Sample size calculation is an important issue in the experimental design of biomedical research. For RNA-seq experiments, we already proposed a method to calculate the sample size \cite{2013chungi}. Here, we introduce our speed up version of sample size estimation with user-friendly interface.
+
+\section{Installation}
+
+\subsection{Requirement}
+Based on the \href{http://cran.r-project.org/web/packages/gWidgets/vignettes/gWidgets.pdf}{gWidgets document}, following packages including RGtk2, cairoDevice, gWidgets, and gWidgetsRGtk2 are required. You can install them by following command. You will also need to install stringr package.
+<<requirement, eval=F,tidy=FALSE>>=
+install.packages("gWidgetsRGtk2", dep = TRUE)
+install.packages("stringr")
+install.packages("ssanv")
+@
+
+Then, you need to install rsse package from source.
+<<rssesource, eval=F,tidy=FALSE>>=
+install.packages('rsse_0.98.2.tar.gz', repos = NULL)
+library(rsse)
+@
+When you load the rsse package on Windows system, it may require you to install GTK+ libarary if there is no GTK libaray installed in your system. Please select GTK+ and follow the instruction to finish the GTK+ installation.
+
+For mac system, it may be more difficult to install correct GTK2 library. You may have a try on following command:
+<<mac, eval=F,tidy=FALSE>>=
+sudo port install gtk2 +x11
+@
+
+\section{Standard workflow}
+
+\subsection{Quick start}
+
+Here we show the most basic steps for RNASeq sample size estimation. You can call the function directly, or start the estimation tool in either single mode or batch mode.
+
+<<quick, eval=F,tidy=FALSE>>=
+library(rsse)
+
+#direct call function
+ss<-sample_size(m=10000, m1=100, power=0.8, f=0.1, 
+                w=1, rho=2, lambda0=5, phi_0=1) 
+
+#single mode
+rsse_ui() 
+
+#batch mode
+rsse_batch_ui() 
+@
+
+\newpage
+In single mode (Figure ~\ref{fig:singlemode}), you will estimate the sample size for just one condition. Once the sample size is estimated, an detail description of the estimated sample size which may be used in grant application will be displayed. You can copy the descripton to clipboard by clicking the "Copy to clipborad" button.\\
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\linewidth]{singlemode.png}
+    \caption{Single mode GUI}
+    \label{fig:singlemode}
+\end{figure}
+
+\newpage
+In batch mode (Figure ~\ref{fig:batchmode}), you can estimate multiple sample sizes for different parameter combination. Character ',' or ';' can be used as delimiter of multiple options for each parameter. You can also export the estimated sample sizes with corresponding conditions as csv format result by clicking "Save to file" button.\\
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\linewidth]{batchmode.png}
+    \caption{Batch mode GUI}
+    \label{fig:batchmode}
+\end{figure}
+
+\newpage
+\section{Session Info}
+
+<<sessInfo, echo=FALSE, results="asis">>=
+toLatex(sessionInfo())
+@
+
+\begin{thebibliography}{9}
+
+\bibitem{2013chungi}
+  Li CI, Su PF, Shyr Y: Sample size calculation based on exact test for assessing differential expression analysis in RNA-seq data. BMC Bioinformatics 2013, 14:357.
+\end{thebibliography}
+
+\end{document}

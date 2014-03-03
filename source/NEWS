@@ -1,0 +1,7 @@
+rsse
+=========
+2014-03-03
+rsse 0.98.2: add rsse_batch_ui function for sample size estimation at batch mode
+
+2014-02-26
+rsse 0.98.1: Initialize "rsse" package
