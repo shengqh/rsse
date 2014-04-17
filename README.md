@@ -11,7 +11,7 @@ RNASeq Sample Size Estimation
 
 Sample size calculation is an important issue in the experimental design
 of biomedical research. For RNA-seq experiments, we already proposed a
-method to calculate the sample size [1]. Here, we introduce our speed up
+method to calculate the sample size [[1](#Citation1)]. Here, we introduce our speed up
 version of sample size estimation with user-friendly interface.
 
 <a name="Prerequisites"/>
@@ -62,6 +62,6 @@ sudo port install gtk2 +x11
 
 <a name="Citation"/>
 #Citation
-
+<a name="Citation1"/>
 - Li CI, Su PF, Shyr Y: Sample size calculation based on exact test for assessing dierential expression analysis in RNA-seq data. BMC Bioinformatics 2013, 14:357.
 
