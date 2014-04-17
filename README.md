@@ -46,14 +46,14 @@ install.packages("ssanv")
 <a name="Installation"/>
 #Installation
 
-rsse package can be downloaded from [github](https://github.com/shengqh/rsse/releases)
-Then, you can install and load rsse package using following command:
+RSSE package can be downloaded from [github](https://github.com/shengqh/rsse/releases)
+Then, you can install and load RSSE package using following command:
 ```
-install.packages(rsse_0.98.3.tar.gz, repos = NULL)
+install.packages(rsse_0.98.4.zip, repos = NULL)
 library(rsse)
 ```
 
-When you load the rsse package on Windows system, it may require you to install GTK+ libarary if there is no GTK libaray installed in your system. Please select GTK+ and follow the instruction to finish the GTK+ installation.
+When you load the RSSE package on Windows system, it may ask you to install GTK+ libarary if there is no GTK libaray installed in your system. Please select GTK+ and follow the instruction to finish the GTK+ installation.
 
 For mac system, it may be more diffcult to install correct GTK2 library.You may have a try on following command:
 ```
