@@ -1,7 +1,7 @@
 Package: RSSE
 Type: Package
 Title: GUI for RNASeq Sample Size Estimation
-Version: 0.98.3
+Version: 0.98.4
 Date: 2014-04-17
 Author: Quanhu SHENG, Shilin ZHAO, Chung-I LI, Yu SHYR
 Maintainer: Quanhu SHENG <shengqh@gmail.com>
