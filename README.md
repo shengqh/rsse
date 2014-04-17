@@ -1,6 +1,53 @@
-rsse
-====
-
 RNASeq Sample Size Estimation
+==
 
-2014
+* [Introduction](#Introduction)
+* [Prerequisites](#Prerequisites)
+* [Installation](#Installation)
+* [Citation](#Citation)
+
+<a name="Introduction"/>
+#Introduction
+
+Sample size calculation is an important issue in the experimental design
+of biomedical research. For RNA-seq experiments, we already proposed a
+method to calculate the sample size [1]. Here, we introduce our speed up
+version of sample size estimation with user-friendly interface.
+
+<a name="Prerequisites"/>
+#Prerequisites
+
+Three major packages are required:
+* gWidgets with gWidgetsRGtk2 for user-friendly interface
+* stringr for parameter parsing
+* ssanv for RNAseq sample size estimation
+
+Based on the gWidgets document, following packages including RGtk2, cairoDevice, gWidgets, and gWidgetsRGtk2 are required. You can install them by following command. You will also need to install stringr package.
+```
+install.packages("gWidgetsRGtk2", dep = TRUE)
+install.packages("stringr")
+install.packages("ssanv")
+```
+
+<a name="Installation"/>
+#Installation
+
+rsse package can be downloaded from [github](https://github.com/shengqh/rsse/releases)
+Then, you can install and load rsse package using following command:
+```
+install.packages(rsse_0.98.3.tar.gz, repos = NULL)
+library(rsse)
+```
+
+When you load the rsse package on Windows system, it may require you to install GTK+ libarary if there is no GTK libaray installed in your system. Please select GTK+ and follow the instruction to finish the GTK+ installation.
+
+For mac system, it may be more diffcult to install correct GTK2 library.You may have a try on following command:
+```
+sudo port install gtk2 +x11
+```
+
+<a name="Citation"/>
+#Citation
+
+- Li CI, Su PF, Shyr Y: Sample size calculation based on exact test for assessing dierential expression analysis in RNA-seq data. BMC Bioinformatics 2013, 14:357.
+
