@@ -19,7 +19,7 @@ version of sample size estimation with user-friendly interface.
 
 * Native library
 
-GTK+ is required to display the graphic interface. 
+GTK+ library is required to display the graphic interface. 
 
 For linux system, the GTK+ usually has been already installed.
 
