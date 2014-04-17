@@ -1,7 +1,7 @@
 Package: rsse
 Type: Package
 Title: A User-friendly RNASeq Sample Size Estimation Tool
-Version: 0.98.2
+Version: 0.98.3
 Date: 2014-03-03
 Author: Quanhu SHENG, Shilin ZHAO, Chung-I LI
 Maintainer: Quanhu SHENG <shengqh@gmail.com>

@@ -1,4 +1,4 @@
-%\VignetteIndexEntry{RNASeq Sample Size Estimation Software with "rsse" package}
+%\VignetteIndexEntry{RNASeq Sample Size Estimation Software with "RSSE" package}
 %\VignettePackage{dupchecker}
 %\VignetteEngine{knitr::knitr}
 
@@ -37,7 +37,7 @@ Sample size calculation is an important issue in the experimental design of biom
 \section{Installation}
 
 \subsection{Requirement}
-Based on the \href{http://cran.r-project.org/web/packages/gWidgets/vignettes/gWidgets.pdf}{gWidgets document}, following packages including RGtk2, cairoDevice, gWidgets, and gWidgetsRGtk2 are required. You can install them by following command. You will also need to install stringr package.
+Based on the \href{http://cran.r-project.org/web/packages/gWidgets/vignettes/gWidgets.pdf}{gWidgets document}, following packages including RGtk2, cairoDevice, gWidgets, and gWidgetsRGtk2 are required. You can install them by following command. You will also need to install stringr and ssanv package.
 <<requirement, eval=F,tidy=FALSE>>=
 install.packages("gWidgetsRGtk2", dep = TRUE)
 install.packages("stringr")
@@ -46,7 +46,7 @@ install.packages("ssanv")
 
 Then, you need to install rsse package from source.
 <<rssesource, eval=F,tidy=FALSE>>=
-install.packages('rsse_0.98.2.tar.gz', repos = NULL)
+install.packages('rsse_0.98.3.tar.gz', repos = NULL)
 library(rsse)
 @
 When you load the rsse package on Windows system, it may require you to install GTK+ libarary if there is no GTK libaray installed in your system. Please select GTK+ and follow the instruction to finish the GTK+ installation.

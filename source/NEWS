@@ -1,5 +1,8 @@
-rsse
+RSSE
 =========
+2014-03-12
+rsse 0.98.3: change lambda0 to mu0 and update the description
+
 2014-03-03
 rsse 0.98.2: add rsse_batch_ui function for sample size estimation at batch mode
 

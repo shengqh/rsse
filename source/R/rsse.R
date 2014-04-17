@@ -37,8 +37,8 @@ est_pvalue<-function(x1,x0,n, phi, w=1) {
   return(min(pvalue, 1))
 }
 
-est_power3<-function(n, w=1, rho=2.0, lambda0=5, phi_0=1, beta=0.2, alpha=0.05, error=0.001){
-  mu0<-lambda0
+est_power3<-function(n, w=1, rho=2.0, mu0=5, phi_0=1, beta=0.2, alpha=0.05, error=0.001){
+  mu0<-mu0
   mu1<-mu0*(rho*w)
   phi_1<-phi_0
   q0_u<-qnbinom(1-error, size=n/phi_0, mu=n*mu0)
@@ -111,14 +111,14 @@ est_power3<-function(n, w=1, rho=2.0, lambda0=5, phi_0=1, beta=0.2, alpha=0.05, 
 ##' @param f FDR level
 ##' @param w Ratio of normalization factors between two groups.
 ##' @param rho minimum fold changes for prognostic genes between two groups.
-##' @param lambda0 Average read counts for prognostic genes.
+##' @param mu0 Average read counts for prognostic genes.
 ##' @param phi_0 Dispersion for prognostic genes.
 ##' @param showMessage Logical. Display the message in the estimation process.
 ##' @export
 ##' @examples #Input initial parameters. 
-##' vm<-10000;vm1<-100;vpower<-0.8;vf<-0.05;vw<-1.0;vrho<-2.0;vlambda0<-5;vphi_0<-2
-##' sample_size(m=vm, m1=vm1, power=vpower, f=vf, w=vw, rho=vrho, lambda0=vlambda0, phi_0=vphi_0)
-sample_size<-function(m=10000, m1=100, power=0.8, f=0.1, w=1, rho=2, lambda0=5, phi_0=1,showMessage=F){
+##' vm<-10000;vm1<-100;vpower<-0.8;vf<-0.05;vw<-1.0;vrho<-2.0;vmu0<-5;vphi_0<-2
+##' sample_size(m=vm, m1=vm1, power=vpower, f=vf, w=vw, rho=vrho, mu0=vmu0, phi_0=vphi_0)
+sample_size<-function(m=10000, m1=100, power=0.8, f=0.1, w=1, rho=2, mu0=5, phi_0=1,showMessage=F){
   r1<-m1 * power
   beta<-1-power
   step.power<-5
@@ -126,12 +126,12 @@ sample_size<-function(m=10000, m1=100, power=0.8, f=0.1, w=1, rho=2, lambda0=5, 
   alpha_star<-r1*f/((m-m1)*(1-f))
   z_alpha<-qnorm(1-alpha_star/2, lower.tail=T)
   z_beta<-qnorm(power, lower.tail=T)
-  n_w<-( ( z_alpha + z_beta )^2* (1 + rho/w +phi_0*lambda0*(1+rho^2)) )/ ( (rho-1)^2*lambda0 )
+  n_w<-( ( z_alpha + z_beta )^2* (1 + rho/w +phi_0*mu0*(1+rho^2)) )/ ( (rho-1)^2*mu0 )
   end.point<-round(n_w)+30
   
   start.point<-1
 
-  p1<-est_power3(n=start.point,w=w, rho=rho, lambda0=lambda0, phi_0=phi_0, beta=beta, alpha=alpha_star)
+  p1<-est_power3(n=start.point,w=w, rho=rho, mu0=mu0, phi_0=phi_0, beta=beta, alpha=alpha_star)
   if (p1>0) {
     return(start.point)
   } else {
@@ -141,7 +141,7 @@ sample_size<-function(m=10000, m1=100, power=0.8, f=0.1, w=1, rho=2, lambda0=5, 
       step.power<-6
     }
     n_Exact<-uniroot.integer(est_power3, c(start.point, end.point), w=w, rho=rho, 
-                             lambda0=lambda0, phi_0=phi_0, beta=beta, alpha=alpha_star, pos.side=T,
+                             mu0=mu0, phi_0=phi_0, beta=beta, alpha=alpha_star, pos.side=T,
                              step.up=T, step.power=step.power,print.steps=showMessage)$root  
     return(n_Exact)
   }
@@ -203,9 +203,9 @@ rsse_ui<-function(){
   tbl[6,2] <- (rhoEdit<-newedit("2.0", fontlist, tbl))
   tbl[6,3] <- (rhoLabel2<-newlabel("minimum fold changes for prognostic genes in control group", fontlist, tbl))
   
-  tbl[7,1] <- (lambda0Label1<-newlabel("lambda0:", fontlist, tbl))
-  tbl[7,2] <- (lambda0Edit<-newedit("5", fontlist, tbl))
-  tbl[7,3] <- (lambda0Label2<-newlabel("average read counts for prognostic gene in control group", fontlist, tbl))
+  tbl[7,1] <- (mu0Label1<-newlabel("mu0:", fontlist, tbl))
+  tbl[7,2] <- (mu0Edit<-newedit("5", fontlist, tbl))
+  tbl[7,3] <- (mu0Label2<-newlabel("minimum average read counts among the prognostic genes in the control group", fontlist, tbl))
   
   tbl[8,1] <- (phi0Label1<-newlabel("phi0:", fontlist, tbl))
   tbl[8,2] <- (phi0Edit<-newedit("1", fontlist, tbl))
@@ -229,10 +229,10 @@ rsse_ui<-function(){
                      as.numeric(svalue(fEdit)),
                      as.numeric(svalue(wEdit)),
                      as.numeric(svalue(rhoEdit)),
-                     as.numeric(svalue(lambda0Edit)),
+                     as.numeric(svalue(mu0Edit)),
                      as.numeric(svalue(phi0Edit)))
     svalue(dText)<-paste0("We are planning a study to identify differential gene expression between two groups. Prior data indicate that ",
-                          "the minimum average read counts among the prognostic genes in the control group is ", svalue(lambda0Edit), 
+                          "the minimum average read counts among the prognostic genes in the control group is ", svalue(mu0Edit), 
                           ", the maximum dispersion is ", svalue(phi0Edit),
                           ", and the ratio of the geometric mean of normalization factors is ", svalue(wEdit),
                           ". Suppose that the total number genes for testing is ", svalue(mEdit),
@@ -315,8 +315,8 @@ rsse_batch_ui<-function(){
   tbl[6,2] <- (rhoEdit1<-newedit("2.0,3.0", fontlist, tbl, width=editwidth))
   tbl[6,3] <- newlabel("minimum fold changes for prognostic genes in control group", fontlist, tbl)
   
-  tbl[7,1] <- newlabel("lambda0:", fontlist, tbl)
-  tbl[7,2] <- (lambda0Edit1<-newedit("5,10", fontlist, tbl, width=editwidth))
+  tbl[7,1] <- newlabel("mu0:", fontlist, tbl)
+  tbl[7,2] <- (mu0Edit1<-newedit("5,10", fontlist, tbl, width=editwidth))
   tbl[7,3] <- newlabel("average read counts for prognostic gene in control group", fontlist, tbl)
   
   tbl[8,1] <- newlabel("phi0:", fontlist, tbl)
@@ -330,7 +330,7 @@ rsse_batch_ui<-function(){
                                f=rep(0, 1),
                                w=rep(0, 1),
                                rho=rep(0, 1),
-                               lambda0=rep(0, 1),
+                               mu0=rep(0, 1),
                                phi0=rep(0, 1),
                                sampleSize=rep(NA, 1)))
   gt<-NA
@@ -343,17 +343,17 @@ rsse_batch_ui<-function(){
     fs<-getvalues(fEdit1, "f")
     ws<-getvalues(wEdit1, "w")
     rhos<-getvalues(rhoEdit1, "rho")
-    lambda0s<-getvalues(lambda0Edit1, "lambda0")
+    mu0s<-getvalues(mu0Edit1, "mu0")
     phi0s<-getvalues(phi0Edit1, "phi0")
     
-    totalcount<-length(ms) * length(m1s) * length(powers) * length(fs) * length(ws) * length(rhos) * length(lambda0s) * length(phi0s)
+    totalcount<-length(ms) * length(m1s) * length(powers) * length(fs) * length(ws) * length(rhos) * length(mu0s) * length(phi0s)
     result<<-as.matrix(data.frame(m=rep(0, totalcount),
                                   m1=rep(0, totalcount),
                                   power=rep(0, totalcount),
                                   f=rep(0, totalcount),
                                   w=rep(0, totalcount),
                                   rho=rep(0, totalcount),
-                                  lambda0=rep(0, totalcount),
+                                  mu0=rep(0, totalcount),
                                   phi0=rep(0, totalcount),
                                   sampleSize=rep(NA, totalcount)))
     
@@ -364,10 +364,10 @@ rsse_batch_ui<-function(){
           for(f in fs){
             for(w in ws){
               for(rho in rhos){
-                for(lambda0 in lambda0s){
+                for(mu0 in mu0s){
                   for(phi0 in phi0s){
                     index = index+1
-                    result[index,]<<-c(m, m1, power, f, w, rho, lambda0, phi0, NA)
+                    result[index,]<<-c(m, m1, power, f, w, rho, mu0, phi0, NA)
                   }
                 }
               }
