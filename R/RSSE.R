@@ -1,6 +1,3 @@
-library("ssanv")
-library("gWidgets")
-library("stringr")
 options("guiToolkit"="RGtk2")
 
 est_pvalue_store<-function(X1X0Sum, n, phi, w=1) {
@@ -50,7 +47,7 @@ est_power3<-function(n, w=1, rho=2.0, mu0=5, phi_0=1, beta=0.2, alpha=0.05, erro
   temp1<-dnbinom(q1_l:q1_u, mu=(n*mu1), size=n/phi_1)
   temp2<-dnbinom(q0_l:q0_u, mu=(n*mu0), size=n/phi_0)
   if (max(q0_u,q0_l,q1_u,q1_l)>=10000) { #Method2, doesn't store every pvalue but do it every time
-    getPvalue<-function(x1,x0,...) {
+    getPvalue<-function(x1,x0,yy=yyStore,...) {
       est_pvalue(x1,x0,n=n, phi=phi_0, w=w,...)
     }
   } else { #Method1, store every pvalue
@@ -114,10 +111,12 @@ est_power3<-function(n, w=1, rho=2.0, mu0=5, phi_0=1, beta=0.2, alpha=0.05, erro
 ##' @param mu0 Average read counts for prognostic genes.
 ##' @param phi_0 Dispersion for prognostic genes.
 ##' @param showMessage Logical. Display the message in the estimation process.
+##' @importFrom ssanv uniroot.integer
 ##' @export
-##' @examples #Input initial parameters. 
-##' vm<-10000;vm1<-100;vpower<-0.8;vf<-0.05;vw<-1.0;vrho<-2.0;vmu0<-5;vphi_0<-2
-##' sample_size(m=vm, m1=vm1, power=vpower, f=vf, w=vw, rho=vrho, mu0=vmu0, phi_0=vphi_0)
+##' @examples 
+##' \dontrun{#Input initial parameters. 
+##' sample_size(m=10000, m1=100, power=0.8, f=0.1, w=1, rho=2, mu0=5, phi_0=1)
+##' }
 sample_size<-function(m=10000, m1=100, power=0.8, f=0.1, w=1, rho=2, mu0=5, phi_0=1,showMessage=F){
   r1<-m1 * power
   beta<-1-power
@@ -140,7 +139,7 @@ sample_size<-function(m=10000, m1=100, power=0.8, f=0.1, w=1, rho=2, mu0=5, phi_
     } else if (p1<=0.6) {
       step.power<-6
     }
-    n_Exact<-uniroot.integer(est_power3, c(start.point, end.point), w=w, rho=rho, 
+    n_Exact<-ssanv::uniroot.integer(est_power3, c(start.point, end.point), w=w, rho=rho, 
                              mu0=mu0, phi_0=phi_0, beta=beta, alpha=alpha_star, pos.side=T,
                              step.up=T, step.power=step.power,print.steps=showMessage)$root  
     return(n_Exact)
@@ -164,13 +163,15 @@ newedit<-function(defaultvalue, fontlist, container, width=10){
 ##' A function to display user friendly interface to do estitamete the sample size for differential expression analysis of RNA-seq data.
 ##' 
 ##' @export
+##' @import gWidgets
+##' @import gWidgetsRGtk2
 ##' @examples 
 ##' \dontrun{
 ##' rsse_ui()
 ##' }
 rsse_ui<-function(){
-  win <- gwindow("RNASeq Sample Size Estimation 0.99.1",width=1024, height=768, visible=FALSE)
-  topgroup<-ggroup(container=win,horizontal=F)
+  win <- gWidgets::gwindow("RNASeq Sample Size Estimation 0.98.3",width=1024, height=768, visible=FALSE)
+  topgroup<-gWidgets::ggroup(container=win,horizontal=F)
   fontlist <- list(size=14)
   redfontlist <- list(size=14, color="red")
   bluefontlist <- list(size=14, color="blue")
@@ -261,7 +262,7 @@ rsse_ui<-function(){
 
 getvalues<-function(editFrom, name){
   v<-svalue(editFrom)
-  result<-str_trim(unlist(strsplit(v, c(',',';'))))
+  result<-stringr::str_trim(unlist(strsplit(v, c(',',';'))))
   result<-as.double(result)
   if(any(is.na(result))){
     stop(paste("The values of ", name, " should be all numeric: ", v))
@@ -280,7 +281,7 @@ getvalues<-function(editFrom, name){
 ##' rsse_batch_ui()
 ##' }
 rsse_batch_ui<-function(){
-  win <- gwindow("RNASeq Sample Size Estimation 0.99.1",width=1024, height=768, visible=FALSE)
+  win <- gwindow("RNASeq Sample Size Estimation 0.98.3",width=1024, height=768, visible=FALSE)
   topgroup<-ggroup(container=win,horizontal=F)
   fontlist <- list(size=14)
   redfontlist <- list(size=14, color="red")

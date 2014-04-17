@@ -32,8 +32,8 @@ A function to estitamete the sample size for differential
 expression analysis of RNA-seq data.
 }
 \examples{
-#Input initial parameters.
-vm<-10000;vm1<-100;vpower<-0.8;vf<-0.05;vw<-1.0;vrho<-2.0;vmu0<-5;vphi_0<-2
-sample_size(m=vm, m1=vm1, power=vpower, f=vf, w=vw, rho=vrho, mu0=vmu0, phi_0=vphi_0)
+\dontrun{#Input initial parameters.
+sample_size(m=10000, m1=100, power=0.8, f=0.1, w=1, rho=2, mu0=5, phi_0=1)
+}
 }
 
