@@ -5,7 +5,7 @@ Version: 0.98.4
 Date: 2014-04-17
 Author: Quanhu SHENG, Shilin ZHAO, Chung-I LI, Yu SHYR
 Maintainer: Quanhu SHENG <shengqh@gmail.com>
-Description: Sample size calculation is an important issue in the experimental
+Description: Sample size estimation is an important issue in the experimental
     design of biomedical research. For RNA-seq experiments, we already proposed
     a method to calculate the sample size. Here, we introduce our speed up
     version of sample size estimation with user-friendly interface.

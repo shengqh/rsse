@@ -46,6 +46,7 @@ est_power3<-function(n, w=1, rho=2.0, mu0=5, phi_0=1, beta=0.2, alpha=0.05, erro
   a<-0
   temp1<-dnbinom(q1_l:q1_u, mu=(n*mu1), size=n/phi_1)
   temp2<-dnbinom(q0_l:q0_u, mu=(n*mu0), size=n/phi_0)
+  yyStore<-list()
   if (max(q0_u,q0_l,q1_u,q1_l)>=10000) { #Method2, doesn't store every pvalue but do it every time
     getPvalue<-function(x1,x0,yy=yyStore,...) {
       est_pvalue(x1,x0,n=n, phi=phi_0, w=w,...)
@@ -53,7 +54,6 @@ est_power3<-function(n, w=1, rho=2.0, mu0=5, phi_0=1, beta=0.2, alpha=0.05, erro
   } else { #Method1, store every pvalue
     yMin<-min(q1_l,q1_u)+min(q0_l,q0_u)
     yMax<-max(q1_l,q1_u)+max(q0_l,q0_u)
-    yyStore<-list()
     for (y in yMin:yMax) {
       yyStore[[y+1]]<-est_pvalue_store(y,n=n, phi=phi_0, w=w)
     }
@@ -114,9 +114,7 @@ est_power3<-function(n, w=1, rho=2.0, mu0=5, phi_0=1, beta=0.2, alpha=0.05, erro
 ##' @importFrom ssanv uniroot.integer
 ##' @export
 ##' @examples 
-##' \dontrun{#Input initial parameters. 
 ##' sample_size(m=10000, m1=100, power=0.8, f=0.1, w=1, rho=2, mu0=5, phi_0=1)
-##' }
 sample_size<-function(m=10000, m1=100, power=0.8, f=0.1, w=1, rho=2, mu0=5, phi_0=1,showMessage=F){
   r1<-m1 * power
   beta<-1-power
